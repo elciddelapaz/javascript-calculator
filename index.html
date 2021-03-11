@@ -21,13 +21,9 @@
                 <div class="display-indicate">
                     max
                 </div>
-                <div class="display-main" id="display">
+                <div class="display-main" id="display"></div>
 
-                </div>
-
-                <div class="display-operations" id="operation">
-
-                </div>
+                <div class="display-operations" id="operation"></div>
             </div>
 
             <div class="row">
@@ -87,86 +83,114 @@
         const display = document.querySelector('.display-main');
         const operation = document.querySelector('.display-operations');
         let allButtons = document.querySelectorAll('.button');
-        let total, input;
+        let body = document.querySelector('body');
+        let max = document.querySelector('.display-indicate');
+        let total, input, isMax = false, counter = 0;
         //button event listener
         allButtons.forEach(el => {
-            el.addEventListener('click', function () {
-                input = Number(display.innerHTML);
-                if (input.toString().length < 10) {
-                    //if the pressed buton is not a number
-                    if (isNaN(this.innerHTML)) {
-                        //if it is an operation
-                        if (this.innerHTML == "+" || this.innerHTML == "-" || this.innerHTML == "*" || this.innerHTML == "/") {
-                            //if the input is not empty
-                            if (!(input == "")) {
-                                operation.innerHTML += this.innerHTML;
-                            }
-                            display.innerHTML = "";
-                        }
-                        //if the equal sign is pressed
-                        else if (this.innerHTML == "=") {
-                                total = eval(operation.innerHTML);
-                                display.innerHTML = total;
-                        }
-                        //if the dot is pressed
-                        else if (this.innerHTML == ".") {
-                            display.innerHTML += this.innerHTML;
-                            operation.innerHTML += this.innerHTML;
-                        }
-                        //if the ac is pressed
-                        else if (this.innerHTML == "ac") {
-                            display.innerHTML = "";
-                            operation.innerHTML = "";
-                        }
-                        //if the ce is pressed
-                        else if (this.innerHTML == "ce") {
-                            //clear entry
-                            for (let i = 0; i < input.toString().length; i++) {
-                                if ((isNaN(input.toString().charAt(i))) == false) {
-                                    operation.innerHTML = operation.innerHTML.slice(0, -1);
-                                }
-                            }
-                            display.innerHTML = "";
-                        }
+            el.addEventListener('click', clickFunction);
+        })
+        body.addEventListener('keydown', keyboardFunction);
+
+        //clickFunction()
+        function clickFunction() {
+            //if the operation is less than 29 characters
+            if ((operation.innerHTML.toString().length) < 29) {
+                isMax = false;
+            }
+            //show max
+            else {
+                isMax = true;
+                max.setAttribute('style', 'color:white;');
+            }
+            //if it is an operation, =, ., ce, and ac
+            if ((isNaN(this.innerHTML))) {
+                //if max is not showing
+                if (isMax != true) {
+                    //if it is an operation
+                    if (this.innerHTML == "+" || this.innerHTML == "-" || this.innerHTML == "*" || this.innerHTML == "/") {
+                        operation.innerHTML += this.innerHTML;
                     }
-                    //if the pressed button is number
-                    else {
-                        display.innerHTML += this.innerHTML;
+                    //if the dot is clicked
+                    else if (this.innerHTML == ".") {
                         operation.innerHTML += this.innerHTML;
                     }
                 }
-                else {
-                    //if the pressed buton is not a number
-                    if (isNaN(this.innerHTML)) {
-                        //if it is an operation
-                        if (this.innerHTML == "+" || this.innerHTML == "-" || this.innerHTML == "*" || this.innerHTML == "/") {
-                            display.innerHTML = "";
-                            operation.innerHTML += this.innerHTML;
-                        }
-                        //if the equal sign is pressed
-                        else if (this.innerHTML == "=") {
-                            total = eval(operation.innerHTML);
-                            display.innerHTML = total;
-                        }
-                        //if the ac is pressed
-                        else if (this.innerHTML == "ac") {
-                            display.innerHTML = "";
-                            operation.innerHTML = "";
-                        }
-                        //if the ce is pressed
-                        else if (this.innerHTML == "ce") {
-                            //clear entry
-                            for (let i = 0; i < input.toString().length; i++) {
-                                if ((isNaN(input.toString().charAt(i))) == false) {
-                                    operation.innerHTML = operation.innerHTML.slice(0, -1);
-                                }
-                            }
-                            display.innerHTML = "";
-                        }
+                //if the equal sign is clicked
+                if (this.innerHTML == "=") {
+                    total = eval(operation.innerHTML);
+                    display.innerHTML = total;
+                }
+                //if the ac is clicked
+                else if (this.innerHTML == "ac") {
+                    display.innerHTML = "";
+                    operation.innerHTML = "";
+                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
+                }
+                //if the ce is clicked
+                else if (this.innerHTML == "ce") {
+                    operation.innerHTML = operation.innerHTML.slice(0, -1);
+                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
+                }
+            }
+            //if it is a number
+            else {
+                //if max is not showing
+                if (isMax != true) {
+                    operation.innerHTML += this.innerHTML;
+                }
+            }
+        }
+        //keyboardFunction()
+        function keyboardFunction(e) {
+            
+            let key = e.key;
+            console.log(key)
+            if ((operation.innerHTML.toString().length) < 29) {
+                isMax = false;
+            }
+            else {
+                isMax = true;
+                max.setAttribute('style', 'color:white;');
+            }
+            //if it is an operation, =, ., ce, and ac
+            if (isNaN(key)) {
+                //if max is not showing
+                if (isMax != true) {
+                    //if it is an operation 
+                    if (key == "+" || key == "-" || key == "*" || key == "/") {
+                        operation.innerHTML += key;
+                    }
+                    //if the dot is pressed
+                    else if (key == ".") {
+                        operation.innerHTML += key;
                     }
                 }
-            })
-        })
+                //if the equal sign is pressed
+                if (key == "=") {
+                    total = eval(operation.innerHTML);
+                    display.innerHTML = total;
+                }
+                //if the Delete is pressed
+                else if (key == "Delete") {
+                    display.innerHTML = "";
+                    operation.innerHTML = "";
+                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
+                }
+                //if the End is pressed
+                else if (key == "End") {
+                    operation.innerHTML = operation.innerHTML.slice(0, -1);
+                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
+                }
+            }
+            //if it is a number
+            else {
+                //if max is not showing
+                if (isMax != true) {
+                    operation.innerHTML += key;
+                }
+            }
+        }
     </script>
 </body>
 
