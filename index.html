@@ -94,6 +94,7 @@
 
         //clickFunction()
         function clickFunction() {
+            let button = this.innerHTML;
             //if the operation is less than 29 characters
             if ((operation.innerHTML.toString().length) < 29) {
                 isMax = false;
@@ -103,48 +104,13 @@
                 isMax = true;
                 max.setAttribute('style', 'color:white;');
             }
-            //if it is an operation, =, ., ce, and ac
-            if ((isNaN(this.innerHTML))) {
-                //if max is not showing
-                if (isMax != true) {
-                    //if it is an operation
-                    if (this.innerHTML == "+" || this.innerHTML == "-" || this.innerHTML == "*" || this.innerHTML == "/") {
-                        operation.innerHTML += this.innerHTML;
-                    }
-                    //if the dot is clicked
-                    else if (this.innerHTML == ".") {
-                        operation.innerHTML += this.innerHTML;
-                    }
-                }
-                //if the equal sign is clicked
-                if (this.innerHTML == "=") {
-                    total = eval(operation.innerHTML);
-                    display.innerHTML = total;
-                }
-                //if the ac is clicked
-                else if (this.innerHTML == "ac") {
-                    display.innerHTML = "";
-                    operation.innerHTML = "";
-                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
-                }
-                //if the ce is clicked
-                else if (this.innerHTML == "ce") {
-                    operation.innerHTML = operation.innerHTML.slice(0, -1);
-                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
-                }
-            }
-            //if it is a number
-            else {
-                //if max is not showing
-                if (isMax != true) {
-                    operation.innerHTML += this.innerHTML;
-                }
-            }
+            //operationFunction
+            operationFunction(button);
         }
         //keyboardFunction()
         function keyboardFunction(e) {
-            
             let key = e.key;
+            let button = key;
             console.log(key)
             if ((operation.innerHTML.toString().length) < 29) {
                 isMax = false;
@@ -153,23 +119,37 @@
                 isMax = true;
                 max.setAttribute('style', 'color:white;');
             }
+            operationFunction(button);
+        }
+        function operationFunction(button) {
             //if it is an operation, =, ., ce, and ac
-            if (isNaN(key)) {
+            if ((isNaN(button))) {
                 //if max is not showing
                 if (isMax != true) {
-                    //if it is an operation 
-                    if (key == "+" || key == "-" || key == "*" || key == "/") {
-                        operation.innerHTML += key;
+                    //if it is an operation
+                    if (button == "+" || button == "-" || button == "*" || button == "/") {
+                        operation.innerHTML += button;
                     }
-                    //if the dot is pressed
-                    else if (key == ".") {
-                        operation.innerHTML += key;
+                    //if the dot is clicked
+                    else if (button == ".") {
+                        operation.innerHTML += button;
                     }
                 }
-                //if the equal sign is pressed
-                if (key == "=") {
+                //if the equal sign is clicked
+                if (button == "=") {
                     total = eval(operation.innerHTML);
                     display.innerHTML = total;
+                }
+                //if the ac is clicked
+                else if (button == "ac") {
+                    display.innerHTML = "";
+                    operation.innerHTML = "";
+                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
+                }
+                //if the ce is clicked
+                else if (button == "ce") {
+                    operation.innerHTML = operation.innerHTML.slice(0, -1);
+                    max.setAttribute('style', 'rgba(255, 255, 255, 0.05)');
                 }
                 //if the Delete is pressed
                 else if (key == "Delete") {
@@ -187,7 +167,7 @@
             else {
                 //if max is not showing
                 if (isMax != true) {
-                    operation.innerHTML += key;
+                    operation.innerHTML += button;
                 }
             }
         }
